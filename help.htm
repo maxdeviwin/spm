@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum Mint - Video Course</title>
+ 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #090909;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 24px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 10px;
+            border-radius: 20px;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-nav a.course-btn {
+            background: linear-gradient(45deg, #6c63ff, #9969c7, #6c63ff);
+            background-size: 200% 200%;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            animation: gradient 3s ease infinite;
+            box-shadow: 0 0 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .connect-wallet {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Звездный фон для космического ощущения */
+        .star-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 5px, white, rgba(255, 255, 255, 0)),
+                radial-gradient(1px 1px at 50px 25px, white, rgba(255, 255, 255, 0)),
+                radial-gradient(1px 1px at 125px 20px, white, rgba(255, 255, 255, 0)),
+                radial-gradient(1.5px 1.5px at 50px 75px, white, rgba(255, 255, 255, 0)),
+                radial-gradient(2px 2px at 15px 125px, white, rgba(255, 255, 255, 0)),
+                radial-gradient(2.5px 2.5px at 110px 80px, white, rgba(255, 255, 255, 0));
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .course-title {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, #fff, #6c63ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        .course-description {
+            text-align: center;
+            color: #aaa;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+            aspect-ratio: 16/9;
+            background-color: #000;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        
+        /* Стили для видео плеера с возможностью загрузки файла */
+        .custom-video-player {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #6c63ff;
+        }
+        
+        .upload-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(45deg, #6c63ff, #9969c7);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        #videoUpload {
+            display: none;
+        }
+        
+        /* Секция для дополнительных видео */
+        .video-playlist {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .playlist-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 40px 0 20px;
+            grid-column: 1 / -1;
+            color: #fff;
+        }
+        
+        .video-item {
+            background-color: rgba(20, 20, 30, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            background-color: #333;
+            position: relative;
+        }
+        
+        .video-thumbnail::after {
+            content: "▶";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #fff;
+            background-color: rgba(108, 99, 255, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.9;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .video-duration {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        footer {
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+        
+        /* Подключенный кошелек стили */
+        .wallet-container {
+            position: relative;
+        }
+        
+        .connect-wallet.connected {
+            background-color: #4B0082;
+            position: relative;
+            padding-right: 28px;
+        }
+        
+        .connect-wallet.connected::after {
+            content: "";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4DEA4A;
+        }
+        
+        .wallet-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            margin-top: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .wallet-menu.open {
+            display: block;
+        }
+        
+        .wallet-menu-item {
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        
+        .wallet-menu-item:hover {
+            background-color: #333;
+        }
+        
+        .wallet-menu-item.disconnect {
+            color: #ff6b6b;
+            border-top: 1px solid #333;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .course-title {
+                font-size: 28px;
+            }
+            
+            .course-description {
+                font-size: 14px;
+                margin-bottom: 30px;
+            }
+            
+            .video-playlist {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #111;
+                padding: 10px;
+                flex-direction: column;
+                z-index: 100;
+            }
+            
+            .main-nav.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Удаляем стили для информационного блока */
+        .video-preparation-note {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="star-bg"></div>
+
+    <div class="main-content">
+        <h1 class="course-title">Solana Token Creation Guide</h1>
+        <p class="course-description">
+            Learn how to create your own Solana token from start to finish with Spectrum Mint Launche Tool. This comprehensive video guide will walk you through the entire process, from setting up your meme and add liquidity to launching your token on the Solana blockchain.
+        </p>
+
+        <div class="video-container">
+            <!-- Только один видеоплеер с загруженным видео -->
+            <div class="custom-video-player">
+                <video id="courseVideo" controls="" autoplay="">
+                    <source src="video/help.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <span>© SPECTRUM MINT 2026</span>
+        </div>
+    </footer>
+</body>
+</html> 
