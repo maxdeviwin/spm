@@ -3,443 +3,905 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spectrum Mint - Video Course</title>
- 
+
+    <title>Solana Token Creation Guide | SpectrumMint</title>
+
+    <meta
+        name="description"
+        content="Learn how to create and launch your own Solana token with the SpectrumMint launch tool."
+    >
+
+    <meta name="theme-color" content="#080a10">
+
     <style>
+        /* ========================================
+           SPECTRUMMINT — VIDEO TUTORIAL PAGE
+        ======================================== */
+
+        :root {
+            --bg: #080a10;
+            --surface: #10131c;
+            --surface-hover: #171b27;
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f5f7ff;
+            --muted: #9299ad;
+            --accent: #8b7cff;
+            --accent-blue: #5c9dff;
+            --success: #42d9a1;
+            --radius: 16px;
+            --content-width: 1180px;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #090909;
-            color: #fff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(92, 105, 255, 0.09),
+                    transparent 45%
+                ),
+                var(--bg);
+            color: var(--text);
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
 
-        header {
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
+        body,
+        button,
+        a {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        /* ========================================
+           HEADER
+        ======================================== */
+
+        .site-header {
+            position: sticky;
+            top: 0;
             z-index: 100;
+            width: 100%;
+            background: rgba(8, 10, 16, 0.88);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
-        .header-container {
-            max-width: 1200px;
+        .header-inner {
+            width: min(100% - 40px, var(--content-width));
+            min-height: 76px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 24px;
         }
 
-        .logo img {
-            height: 24px;
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(139, 124, 255, 0.35);
+            border-radius: 11px;
+            background: linear-gradient(
+                135deg,
+                rgba(139, 124, 255, 0.24),
+                rgba(92, 157, 255, 0.12)
+            );
+            color: #b6adff;
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+        .brand-name {
+            white-space: nowrap;
+        }
+
+        .brand-name span {
+            color: #a99dff;
         }
 
         .main-nav {
             display: flex;
-            gap: 10px;
-            margin: 0 auto;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .main-nav a {
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #a8aec0;
             text-decoration: none;
             font-size: 13px;
-            padding: 6px 10px;
-            border-radius: 20px;
+            font-weight: 550;
+            white-space: nowrap;
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
         }
 
-        .main-nav a:hover, .main-nav a.active {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .main-nav a.course-btn {
-            background: linear-gradient(45deg, #6c63ff, #9969c7, #6c63ff);
-            background-size: 200% 200%;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            animation: gradient 3s ease infinite;
-            box-shadow: 0 0 15px rgba(108, 99, 255, 0.3);
-        }
-        
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+        .main-nav a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.045);
         }
 
-        .connect-wallet {
-            background-color: #6c63ff;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 16px;
+        .main-nav a.active {
+            color: #c2baff;
+            background: rgba(139, 124, 255, 0.11);
+            border-color: rgba(139, 124, 255, 0.17);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .launch-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 16px;
+            border: 1px solid rgba(139, 124, 255, 0.45);
+            border-radius: 11px;
+            background: linear-gradient(
+                135deg,
+                #8273f4,
+                #6559dc
+            );
+            box-shadow: 0 4px 18px rgba(110, 94, 235, 0.16);
+            color: #fff;
+            text-decoration: none;
             font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .launch-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 24px rgba(110, 94, 235, 0.28);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 21px;
             cursor: pointer;
         }
 
+        /* ========================================
+           MAIN CONTENT
+        ======================================== */
+
         .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 60px 20px;
-            max-width: 1200px;
+            width: min(100% - 40px, var(--content-width));
             margin: 0 auto;
-            position: relative;
+            padding: 66px 0 88px;
+            flex: 1;
         }
-        
-        /* Звездный фон для космического ощущения */
-        .star-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(1px 1px at 25px 5px, white, rgba(255, 255, 255, 0)),
-                radial-gradient(1px 1px at 50px 25px, white, rgba(255, 255, 255, 0)),
-                radial-gradient(1px 1px at 125px 20px, white, rgba(255, 255, 255, 0)),
-                radial-gradient(1.5px 1.5px at 50px 75px, white, rgba(255, 255, 255, 0)),
-                radial-gradient(2px 2px at 15px 125px, white, rgba(255, 255, 255, 0)),
-                radial-gradient(2.5px 2.5px at 110px 80px, white, rgba(255, 255, 255, 0));
-            z-index: 0;
-            opacity: 0.3;
+
+        .intro {
+            max-width: 760px;
+            margin: 0 auto 34px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            border: 1px solid rgba(139, 124, 255, 0.22);
+            border-radius: 999px;
+            background: rgba(139, 124, 255, 0.07);
+            color: #b8adff;
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(66, 217, 161, 0.4);
         }
 
         .course-title {
-            font-size: 38px;
+            max-width: 780px;
+            margin: 0 auto 18px;
+            color: var(--text);
+            font-size: clamp(32px, 5vw, 52px);
             font-weight: 800;
-            margin-bottom: 20px;
-            text-align: center;
-            background: linear-gradient(90deg, #fff, #6c63ff);
+            letter-spacing: -2px;
+            line-height: 1.12;
+        }
+
+        .course-title span {
+            background: linear-gradient(
+                100deg,
+                #a89aff 0%,
+                #8f9eff 50%,
+                #70b6ff 100%
+            );
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 2;
+            background-clip: text;
+            color: transparent;
         }
 
         .course-description {
-            text-align: center;
-            color: #aaa;
-            font-size: 16px;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-            position: relative;
-            z-index: 2;
-        }
-
-        .video-container {
-            width: 100%;
-            max-width: 800px;
+            max-width: 670px;
             margin: 0 auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 2;
-            aspect-ratio: 16/9;
-            background-color: #000;
+            color: var(--muted);
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.8;
         }
 
-        .video-container iframe,
-        .video-container video {
+        /* ========================================
+           VIDEO SECTION
+        ======================================== */
+
+        .video-section {
             width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-        
-        /* Стили для видео плеера с возможностью загрузки файла */
-        .custom-video-player {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            background-color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .video-upload-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-        }
-        
-        .upload-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #6c63ff;
-        }
-        
-        .upload-message {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #ddd;
-        }
-        
-        .upload-btn {
-            background: linear-gradient(45deg, #6c63ff, #9969c7);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 12px 24px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        #videoUpload {
-            display: none;
-        }
-        
-        /* Секция для дополнительных видео */
-        .video-playlist {
-            width: 100%;
-            max-width: 800px;
-            margin: 40px auto 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .playlist-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 40px 0 20px;
-            grid-column: 1 / -1;
-            color: #fff;
-        }
-        
-        .video-item {
-            background-color: rgba(20, 20, 30, 0.7);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .video-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .video-thumbnail {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            display: block;
-            background-color: #333;
-            position: relative;
-        }
-        
-        .video-thumbnail::after {
-            content: "▶";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: #fff;
-            background-color: rgba(108, 99, 255, 0.7);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.9;
-        }
-        
-        .video-info {
-            padding: 15px;
-        }
-        
-        .video-title {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-        
-        .video-duration {
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        footer {
-            padding: 20px 0;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 10;
+            max-width: 960px;
+            margin: 0 auto;
         }
 
-        .footer-content {
+        .video-card {
+            overflow: hidden;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                rgba(24, 28, 42, 0.98),
+                rgba(12, 14, 22, 0.98)
+            );
+            box-shadow:
+                0 24px 70px rgba(0, 0, 0, 0.35),
+                0 0 60px rgba(103, 91, 235, 0.055);
+        }
+
+        .video-topbar {
+            min-height: 42px;
+            padding: 0 8px 10px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .video-topbar-label {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #d6d9e7;
             font-size: 12px;
-            color: #888;
+            font-weight: 650;
         }
-        
-        /* Подключенный кошелек стили */
-        .wallet-container {
-            position: relative;
-        }
-        
-        .connect-wallet.connected {
-            background-color: #4B0082;
-            position: relative;
-            padding-right: 28px;
-        }
-        
-        .connect-wallet.connected::after {
-            content: "";
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+
+        .video-indicator {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #4DEA4A;
+            background: #8c7dff;
+            box-shadow: 0 0 10px rgba(140, 125, 255, 0.5);
         }
-        
-        .wallet-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            margin-top: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 100;
+
+        .video-quality {
+            color: #858da3;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 13px;
+            background: #000;
         }
-        
-        .wallet-menu.open {
+
+        .video-container video {
             display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #000;
+            object-fit: contain;
         }
-        
-        .wallet-menu-item {
-            padding: 12px 20px;
-            color: #fff;
+
+        /* ========================================
+           VIDEO INFORMATION
+        ======================================== */
+
+        .video-details {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 22px;
+            padding: 0 4px;
+        }
+
+        .video-details-main {
+            min-width: 0;
+        }
+
+        .video-details h2 {
+            margin-bottom: 9px;
+            color: var(--text);
+            font-size: 19px;
+            font-weight: 750;
+            letter-spacing: -0.4px;
+        }
+
+        .video-details p {
+            max-width: 660px;
+            color: var(--muted);
             font-size: 13px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            line-height: 1.8;
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex-shrink: 0;
+            padding: 9px 12px;
+            border: 1px solid rgba(66, 217, 161, 0.18);
+            border-radius: 10px;
+            background: rgba(66, 217, 161, 0.055);
+            color: #7ce8bd;
+            font-size: 11px;
+            font-weight: 700;
             white-space: nowrap;
         }
-        
-        .wallet-menu-item:hover {
-            background-color: #333;
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+
+        .site-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            background: rgba(8, 10, 16, 0.6);
         }
-        
-        .wallet-menu-item.disconnect {
-            color: #ff6b6b;
-            border-top: 1px solid #333;
+
+        .footer-inner {
+            width: min(100% - 40px, var(--content-width));
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
         }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .course-title {
-                font-size: 28px;
+
+        .footer-brand {
+            color: #b5bbcc;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.6px;
+        }
+
+        .footer-copy {
+            color: #747c90;
+            font-size: 12px;
+        }
+
+        .footer-home {
+            color: #a69aff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .footer-home:hover {
+            color: #c6beff;
+        }
+
+        /* ========================================
+           RESPONSIVE LAYOUT
+        ======================================== */
+
+        @media (max-width: 900px) {
+            .header-inner {
+                gap: 14px;
             }
-            
-            .course-description {
-                font-size: 14px;
-                margin-bottom: 30px;
-            }
-            
-            .video-playlist {
-                grid-template-columns: 1fr;
-            }
-            
+
             .main-nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: #111;
-                padding: 10px;
-                flex-direction: column;
-                z-index: 100;
+                gap: 2px;
             }
-            
-            .main-nav.active {
-                display: flex;
+
+            .main-nav a {
+                padding: 9px 8px;
+                font-size: 12px;
             }
-            
-            .menu-toggle {
-                display: block;
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .launch-button {
+                padding: 0 12px;
+                font-size: 12px;
             }
         }
 
-        /* Удаляем стили для информационного блока */
-        .video-preparation-note {
-            display: none;
+        @media (max-width: 700px) {
+            .header-inner {
+                width: min(100% - 32px, var(--content-width));
+                min-height: 68px;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: calc(100% + 1px);
+                left: 0;
+                right: 0;
+                padding: 12px 16px 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+                border-bottom: 1px solid var(--border);
+                background: rgba(10, 12, 19, 0.98);
+                box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
+            }
+
+            .main-nav.open {
+                display: flex;
+            }
+
+            .main-nav a {
+                justify-content: flex-start;
+                padding: 13px 14px;
+                font-size: 14px;
+            }
+
+            .header-actions {
+                gap: 8px;
+            }
+
+            .launch-button {
+                min-height: 38px;
+                padding: 0 11px;
+                font-size: 11px;
+            }
+
+            .main-content {
+                width: min(100% - 32px, var(--content-width));
+                padding: 48px 0 60px;
+            }
+
+            .intro {
+                margin-bottom: 27px;
+            }
+
+            .eyebrow {
+                margin-bottom: 17px;
+                font-size: 10px;
+            }
+
+            .course-title {
+                font-size: clamp(30px, 8vw, 42px);
+                letter-spacing: -1.3px;
+            }
+
+            .course-description {
+                font-size: 13px;
+                line-height: 1.75;
+            }
+
+            .video-card {
+                padding: 7px;
+                border-radius: 15px;
+            }
+
+            .video-topbar {
+                min-height: 35px;
+                padding: 0 5px 8px;
+            }
+
+            .video-topbar-label {
+                font-size: 11px;
+            }
+
+            .video-details {
+                flex-direction: column;
+                gap: 14px;
+                margin-top: 18px;
+            }
+
+            .video-details h2 {
+                font-size: 17px;
+            }
+
+            .video-details p {
+                font-size: 12px;
+            }
+
+            .footer-inner {
+                width: min(100% - 32px, var(--content-width));
+                min-height: 78px;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 18px 0;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .brand {
+                gap: 7px;
+                font-size: 14px;
+            }
+
+            .brand-mark {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+
+            .launch-button {
+                padding: 0 8px;
+                font-size: 10px;
+            }
+        }
+
+        /* Respect reduced-motion preferences. */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="star-bg"></div>
 
-    <div class="main-content">
-        <h1 class="course-title">Solana Token Creation Guide</h1>
-        <p class="course-description">
-            Learn how to create your own Solana token from start to finish with Spectrum Mint Launche Tool. This comprehensive video guide will walk you through the entire process, from setting up your meme and add liquidity to launching your token on the Solana blockchain.
-        </p>
-			<div class="video-container">
-				<div class="custom-video-player">
-					<video
-						id="courseVideo"
-						controls
-						autoplay
-						controlsList="nodownload"
-						disablePictureInPicture
-						oncontextmenu="return false;"
-					>
-						<source src="video/help.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-					</video>
-				</div>
-			</div
-    </div>
-    <footer>
-        <div class="footer-content">
-            <span>© SPECTRUM MINT 2026</span>
+    <!-- ======================================
+         HEADER / NAVIGATION
+    ======================================= -->
+
+    <header class="site-header">
+        <div class="header-inner">
+
+            <a
+                class="brand"
+                href="https://spectrumint.org/"
+                aria-label="SpectrumMint home"
+            >
+                <span class="brand-mark" aria-hidden="true">S</span>
+
+                <span class="brand-name">
+                    Spectrum<span>Mint</span>
+                </span>
+            </a>
+
+            <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+                <a href="https://spectrumint.org/">Home</a>
+
+                <a href="https://spectrumint.org/#launch">
+                    Launch
+                </a>
+
+                <a href="https://spectmint.cc/#pool">
+                    Pool &amp; Swap
+                </a>
+
+                <a
+                    href="https://spectrumint.org"
+                    class="active"
+                    aria-current="page"
+                >
+                    Tutorial
+                </a>
+            </nav>
+
+            <div class="header-actions">
+
+                <a
+                    class="launch-button"
+                    href="https://spectrumint.org/"
+                >
+                    Launch App
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    type="button"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="mainNav"
+                >
+                    ☰
+                </button>
+
+            </div>
         </div>
+    </header>
+
+
+    <!-- ======================================
+         TUTORIAL CONTENT
+    ======================================= -->
+
+    <main class="main-content">
+
+        <section class="intro">
+
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                SPECTRUM MINT ACADEMY
+            </div>
+
+            <h1 class="course-title">
+                Create Your Own
+                <span>Solana Token</span>
+            </h1>
+
+            <p class="course-description">
+                Learn how to create your own Solana token from start to
+                finish with the SpectrumMint launch tool. Follow this
+                video guide to understand the token creation process and
+                prepare for launching your token on the Solana blockchain.
+            </p>
+
+        </section>
+
+
+        <!-- Main video player: existing video URL preserved -->
+
+        <section class="video-section" aria-label="Video tutorial">
+
+            <div class="video-card">
+
+                <div class="video-topbar">
+
+                    <div class="video-topbar-label">
+                        <span class="video-indicator"></span>
+                        Token Creation Tutorial
+                    </div>
+
+                    <span class="video-quality">
+                        VIDEO GUIDE
+                    </span>
+
+                </div>
+
+                <div class="video-container">
+
+                    <video
+                        id="courseVideo"
+                        controls
+                        autoplay
+                        playsinline
+                        controlsList="nodownload"
+                        disablePictureInPicture
+                        oncontextmenu="return false;"
+                        preload="metadata"
+                        aria-label="SpectrumMint Solana token creation tutorial"
+                    >
+                        <source
+                            src="https://spectrumint.org/video/help.mp4"
+                            type="video/mp4"
+                        >
+
+                        Your browser does not support the video tag.
+                    </video>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-details">
+
+                <div class="video-details-main">
+
+                    <h2>How to Create a Solana Token</h2>
+
+                    <p>
+                        Watch the complete walkthrough to learn about
+                        creating your token with SpectrumMint. For the
+                        best experience, use the video controls to pause,
+                        resume, or adjust the playback volume as needed.
+                    </p>
+
+                </div>
+
+                <div class="video-badge">
+                    <span aria-hidden="true">✓</span>
+                    Step-by-step guide
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================
+         FOOTER
+    ======================================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <span class="footer-brand">
+                SPECTRUMMINT
+            </span>
+
+            <span class="footer-copy">
+                © 2026 SpectrumMint. All rights reserved.
+            </span>
+
+            <a
+                class="footer-home"
+                href="https://spectrumint.org"
+            >
+                Back to Home ↗
+            </a>
+
+        </div>
+
     </footer>
+
+
+    <!-- ======================================
+         MOBILE NAVIGATION
+    ======================================= -->
+
+    <script>
+        (() => {
+            const menuToggle = document.getElementById("menuToggle");
+            const mainNav = document.getElementById("mainNav");
+
+            if (!menuToggle || !mainNav) {
+                return;
+            }
+
+            function closeMenu() {
+                mainNav.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+                menuToggle.textContent = "☰";
+            }
+
+            menuToggle.addEventListener("click", () => {
+                const isOpen = mainNav.classList.toggle("open");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    String(isOpen)
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+                menuToggle.textContent = isOpen ? "✕" : "☰";
+            });
+
+            mainNav.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", closeMenu);
+            });
+
+            document.addEventListener("click", (event) => {
+                if (
+                    !mainNav.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 700) {
+                    closeMenu();
+                }
+            });
+        })();
+    </script>
+
 </body>
-</html> 
+</html>
