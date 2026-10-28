@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solana Token Creation Guide | SpectrumMint</title>
+
+    <meta
+        name="description"
+        content="Learn how to create and launch your own Solana token with the SpectrumMint launch tool."
+    >
+
+    <meta name="theme-color" content="#0c0c0c">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap"
+		rel="stylesheet"
+	>
+
+    <style>
+        /* ========================================
+           SPECTRUMMINT — VIDEO TUTORIAL PAGE
+        ======================================== */
+
+        :root {
+            --bg: #0c0c0c;
+            --surface: #131313;
+            --surface-hover: #1a1a1a;
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --accent: #8b7cff;
+            --accent-blue: #5c9dff;
+            --success: #42d9a1;
+            --radius: 16px;
+            --content-width: 1180px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(255, 255, 255, 0.025),
+                    transparent 50%
+                ),
+                var(--bg);
+            color: var(--text);
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body,
+        button,
+        a {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        /* ========================================
+           HEADER
+        ======================================== */
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            padding: 12px 0 0;
+            background: transparent;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .header-inner {
+            position: relative;
+            width: min(100% - 40px, 1000px);
+            min-height: 76px;
+            margin: 0 auto;
+            padding: 0 21px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 30px;
+            background: rgba(17, 17, 17, 0.88);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: block;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .brand-name {
+            white-space: nowrap;
+        }
+
+        .brand-name span {
+            color: #a99dff;
+        }
+
+        .main-nav {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 7px 5px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 23px;
+            background: rgba(7, 7, 7, 0.82);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+        }
+
+        .main-nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 0 19px;
+            border: 1px solid transparent;
+            border-radius: 17px;
+            color: #85858d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 550;
+            white-space: nowrap;
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .main-nav a.active {
+            color: #f5f5f7;
+            background: #242426;
+            border-color: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .launch-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 16px;
+            border: 1px solid rgba(139, 124, 255, 0.45);
+            border-radius: 11px;
+            background: linear-gradient(
+                135deg,
+                #8273f4,
+                #6559dc
+            );
+            box-shadow: 0 4px 18px rgba(110, 94, 235, 0.16);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .launch-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 24px rgba(110, 94, 235, 0.28);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 21px;
+            cursor: pointer;
+        }
+
+        /* ========================================
+           MAIN CONTENT
+        ======================================== */
+
+        .main-content {
+            width: min(100% - 40px, var(--content-width));
+            margin: 0 auto;
+            padding: 28px 0 88px;
+            flex: 1;
+        }
+
+        .intro {
+            max-width: 760px;
+            margin: 0 auto 34px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            border: 1px solid rgba(139, 124, 255, 0.22);
+            border-radius: 999px;
+            background: rgba(139, 124, 255, 0.07);
+            color: #b8adff;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(66, 217, 161, 0.4);
+        }
+
+        .course-title {
+            max-width: 780px;
+            margin: 0 auto 18px;
+            color: var(--text);
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.12;
+        }
+
+        .course-title span {
+            background: linear-gradient(
+                100deg,
+                #f5f5f5 0%,
+                #a8c7ff 18%,
+                #7868ff 38%,
+                #d84bd6 57%,
+                #ff5d9e 72%,
+                #ff8b45 86%,
+                #ffc247 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .course-description {
+            max-width: 670px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        /* ========================================
+           VIDEO SECTION
+        ======================================== */
+
+        .video-section {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            overflow: hidden;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                rgba(29, 29, 29, 0.98),
+                rgba(15, 15, 15, 0.98)
+            );
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.30);
+        }
+
+        .video-topbar {
+            min-height: 42px;
+            padding: 0 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .video-topbar-label {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #d6d9e7;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .video-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8c7dff;
+            box-shadow: 0 0 10px rgba(140, 125, 255, 0.5);
+        }
+
+        .video-quality {
+            color: #858da3;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 13px;
+            background: #000;
+        }
+
+        .video-container video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #000;
+            object-fit: contain;
+        }
+
+        /* ========================================
+           VIDEO INFORMATION
+        ======================================== */
+
+        .video-details {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 22px;
+            padding: 0 4px;
+        }
+
+        .video-details-main {
+            min-width: 0;
+        }
+
+        .video-details h2 {
+            margin-bottom: 9px;
+            color: var(--text);
+            font-size: 19px;
+            font-weight: 750;
+            letter-spacing: -0.4px;
+        }
+
+        .video-details p {
+            max-width: 660px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex-shrink: 0;
+            padding: 9px 12px;
+            border: 1px solid rgba(66, 217, 161, 0.18);
+            border-radius: 10px;
+            background: rgba(66, 217, 161, 0.055);
+            color: #7ce8bd;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+
+        .site-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            background: rgba(12, 12, 12, 0.75);
+        }
+
+        .footer-inner {
+            width: min(100% - 40px, var(--content-width));
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: #b5bbcc;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.6px;
+        }
+
+        .footer-copy {
+            color: #747c90;
+            font-size: 12px;
+        }
+
+        .footer-home {
+            color: #747c90;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 650;
+            transition: color 0.2s ease;
+        }
+
+        .footer-home:hover {
+            color: #b5bbcc;
+        }
+
+        /* ========================================
+           RESPONSIVE LAYOUT
+        ======================================== */
+
+        @media (max-width: 900px) {
+            .header-inner {
+                gap: 14px;
+            }
+
+            .main-nav a {
+                padding-left: 13px;
+                padding-right: 13px;
+                font-size: 12px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .brand-mark {
+                width: 38px;
+                height: 38px;
+            }
+
+            .launch-button {
+                padding: 0 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .site-header {
+                padding-top: 10px;
+            }
+
+            .header-inner {
+                width: calc(100% - 24px);
+                min-height: 68px;
+                padding: 0 12px;
+                border-radius: 22px;
+                gap: 12px;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            .main-nav {
+                display: none;
+                position: absolute;
+                top: calc(100% - 1px);
+                left: 16px;
+                right: 16px;
+                transform: none;
+                padding: 12px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 5px;
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                background: rgba(12, 12, 12, 0.98);
+                box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+            }
+
+            .main-nav.open {
+                display: flex;
+            }
+
+            .main-nav a {
+                min-height: 46px;
+                justify-content: flex-start;
+                padding: 0 14px;
+                font-size: 14px;
+            }
+
+            .header-actions {
+                gap: 8px;
+            }
+
+            .launch-button {
+                min-height: 38px;
+                padding: 0 11px;
+                font-size: 11px;
+            }
+
+            .main-content {
+                width: min(100% - 32px, var(--content-width));
+                padding: 24px 0 60px;
+            }
+
+            .intro {
+                margin-bottom: 27px;
+            }
+
+            .eyebrow {
+                margin-bottom: 17px;
+                font-size: 10px;
+            }
+
+            .course-title {
+                font-size: clamp(30px, 8vw, 42px);
+                letter-spacing: -1.3px;
+            }
+
+            .course-description {
+                font-size: 13px;
+                line-height: 1.75;
+            }
+
+            .video-card {
+                padding: 7px;
+                border-radius: 15px;
+            }
+
+            .video-topbar {
+                min-height: 35px;
+                padding: 0 5px 8px;
+            }
+
+            .video-topbar-label {
+                font-size: 11px;
+            }
+
+            .video-details {
+                flex-direction: column;
+                gap: 14px;
+                margin-top: 18px;
+            }
+
+            .video-details h2 {
+                font-size: 17px;
+            }
+
+            .video-details p {
+                font-size: 12px;
+            }
+
+            .footer-inner {
+                width: min(100% - 32px, var(--content-width));
+                min-height: 78px;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 18px 0;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .brand {
+                gap: 7px;
+                font-size: 17px;
+            }
+
+            .brand-mark {
+                width: 30px;
+                height: 30px;
+            }
+
+            .launch-button {
+                padding: 0 8px;
+                font-size: 10px;
+            }
+        }
+
+        /* Respect reduced-motion preferences. */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Site header with centered pill navigation -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="https://spectrumint.org" aria-label="SpectrumMint home">
+                <img class="brand-mark" src="https://spectrumint.org/logo.png" alt="" aria-hidden="true">
+                <span class="brand-name">SpectrumMint</span>
+            </a>
+
+            <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+                <a href="https://spectrumint.org" >Home</a>
+                <a href="https://spectrumint.org/launch">Launch</a>
+                <a href="https://spectrumint.org/pool-swap">Pool &amp; Swap</a>
+                <a href="https://spectrumint.org/how-to-launch.htm" class="active" aria-current="page">Help</a>
+            </nav>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="mainNav"
+            >☰</button>
+        </div>
+    </header>
+
+
+
+
+
+    <!-- ======================================
+         TUTORIAL CONTENT
+    ======================================= -->
+
+    <main class="main-content">
+
+        <section class="intro">
+
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                SPECTRUM MINT ACADEMY
+            </div>
+
+            <h1 class="course-title">
+                Create Your Own
+                <span>Solana Token</span>
+            </h1>
+
+            <p class="course-description">
+                Learn how to create your own Solana token from start to
+                finish with the SpectrumMint launch tool. Follow this
+                video guide to understand the token creation process and
+                prepare for launching your token on the Solana blockchain.
+            </p>
+
+        </section>
+
+
+        <!-- Main video player: existing video URL preserved -->
+
+        <section class="video-section" aria-label="Video tutorial">
+
+            <div class="video-card">
+
+                <div class="video-topbar">
+
+                    <div class="video-topbar-label">
+                        <span class="video-indicator"></span>
+                        Token Creation Tutorial
+                    </div>
+
+                    <span class="video-quality">
+                        VIDEO GUIDE
+                    </span>
+
+                </div>
+
+                <div class="video-container">
+
+                    <video
+                        id="courseVideo"
+                        controls
+                        autoplay
+                        playsinline
+                        controlsList="nodownload"
+                        disablePictureInPicture
+                        oncontextmenu="return false;"
+                        preload="metadata"
+                        aria-label="SpectrumMint Solana token creation tutorial"
+                    >
+                        <source
+                            src="https://spectrumint.org/video/help.mp4"
+                            type="video/mp4"
+                        >
+
+                        Your browser does not support the video tag.
+                    </video>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-details">
+
+                <div class="video-details-main">
+
+                    <h2>How to Create a Solana Token</h2>
+
+                    <p>
+                        Watch the complete walkthrough to learn about
+                        creating your token with SpectrumMint. For the
+                        best experience, use the video controls to pause,
+                        resume, or adjust the playback volume as needed.
+                    </p>
+
+                </div>
+
+                <div class="video-badge">
+                    <span aria-hidden="true">✓</span>
+                    Step-by-step guide
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================
+         FOOTER
+    ======================================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <span class="footer-brand">
+                SPECTRUM MINT
+            </span>
+
+            <span class="footer-copy">
+                © 2026 SpectrumMint. All rights reserved.
+            </span>
+
+            <a
+                class="footer-home"
+                href="https://spectrumint.org"
+            >
+                Back to Home ↗
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ======================================
+         MOBILE NAVIGATION
+    ======================================= -->
+
+    <script>
+        (() => {
+            const menuToggle = document.getElementById("menuToggle");
+            const mainNav = document.getElementById("mainNav");
+
+            if (!menuToggle || !mainNav) {
+                return;
+            }
+
+            function closeMenu() {
+                mainNav.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute(
+                    "aria-label",
+                    "Open navigation menu"
+                );
+                menuToggle.textContent = "☰";
+            }
+
+            menuToggle.addEventListener("click", () => {
+                const isOpen = mainNav.classList.toggle("open");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    String(isOpen)
+                );
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+                menuToggle.textContent = isOpen ? "✕" : "☰";
+            });
+
+            mainNav.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", closeMenu);
+            });
+
+            document.addEventListener("click", (event) => {
+                if (
+                    !mainNav.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+                    closeMenu();
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 700) {
+                    closeMenu();
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
